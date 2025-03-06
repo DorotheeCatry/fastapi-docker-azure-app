@@ -23,9 +23,7 @@ logs/
 *.csv
 
 # 🚀 Migrations et fichiers temporaires
-migrations/versions/
-migrations/env.py
-migrations/script.py.mako
+migrations
 alembic.ini
 
 # 🐳 Docker et IDE
