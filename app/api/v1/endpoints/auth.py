@@ -101,6 +101,50 @@ async def login(form: AuthData, session: Session = Depends(get_session)):
     return Token(access_token=access_token, token_type="bearer")
 
 
+@router.post("/auth/activate", response_model=dict)
+async def activate_account(
+    request: UserUpdate,
+    session: Session = Depends(get_session)
+):
+    """
+    Activate a user account by setting a new password.
+
+    Parameters:
+    - request (UserUpdate): The new password data.
+    - session (Session): The session to interact with the database.
+
+    Returns:
+    - dict: Success message confirming the account activation.
+    """
+    # Check if the user exists and is not already active
+    statement = select(User).where(User.email == request.email)
+    db_user = session.exec(statement).first()
+
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found."
+        )
+    
+    if db_user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Account is already activated."
+        )
+
+    # Validate the new password
+    validate_password(request.password)
+
+    # Hash the new password and activate the account
+    db_user.hashed_password = get_password_hash(request.password)
+    db_user.is_active = True
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+    
+    return {"success": True, "message": "Account activated successfully!"}
+
+
 
 @router.post("/auth/reset-password", response_model=dict)
 async def reset_password(

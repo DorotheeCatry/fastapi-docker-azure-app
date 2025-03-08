@@ -1,58 +1,122 @@
-# 🚀 FastAPI Boilerplate with JWT Authentication & SQLModel
+# 🚀 Loan Eligibility Prediction API with FastAPI
 
-A **scalable and modular** FastAPI boilerplate with **JWT authentication**, **user management**, and a clean project structure for large-scale applications. Built with **FastAPI** and **SQLModel**, this template provides a good enough foundation for backend development.
+A **FastAPI** project that exposes a classification model to predict loan eligibility while ensuring data security through robust authentication.
 
-## 🔥 Features
-- ✅ **FastAPI + SQLModel** for modern, async-ready backend development
-- 🔐 **JWT-based authentication** (register, login, token validation)
-- 🗄️ **Database integration** with SQLModel & SQLite (easily switch to PostgreSQL/MySQL)
-- 🔒 **Secure password hashing** with Passlib (bcrypt)
-- ⚡ **Event-based startup/shutdown lifecycle** with FastAPI `lifespan`
-- 📂 **Modular and scalable project structure**
-- 🌍 **API versioning (`/api/v1/`)** for long-term maintainability
+## 🔥 Objectives
+
+- 🏦 **Expose a prediction model** to evaluate loan eligibility.
+- 🔒 **Ensure API security** via JWT authentication.
+- 📊 **Record all requests** in a database for analysis.
+- 🔑 **Allow users to change their password** after the first login.
+
+---
+
+## 🛠 Technologies Used
+
+| Component         | Technology |
+|------------------|------------|
+| **Language**     | Python     |
+| **Framework**    | FastAPI    |
+| **Database**     | SQLModel (SQLAlchemy + Pydantic) |
+| **Authentication** | JWT (JSON Web Token) with OAuth2 |
+
+---
 
 ## 📂 Project Structure
 
 ```
 project/
 │-- app/
-│   │-- core/               # Configuration & security utilities
-│   │-- db/                 # Database session & the database itself
-│   │-- models/             # SQLModel database models
-│   │-- schemas/            # Pydantic schemas for data validation
-│   │-- api/                # API routes (auth, users, etc.)
-│   │   │-- v1/             # API version 1
-│   │       │-- endpoints/  # Your endpoints
-│   │-- utils/              # Helper functions (JWT, etc.)
-│   │-- main.py             # FastAPI application entry point
+│   │-- core/               # Configuration & security
+│   │-- db/                 # Database & sessions
+│   │-- models/             # SQLModel models
+│   │-- schemas/            # Pydantic schemas for validation
+│   │-- api/                # API routes (auth, users, loans)
+│   │   │-- v1/             # API versioning
+│   │       │-- endpoints/  # Endpoints
+│   │-- utils/              # Utility functions (JWT, hash...)
+│   │-- main.py             # FastAPI entry point
 │__ requirements.txt        # Dependencies
 ```
 
-## 🚀 Quick Start
+---
 
-### I°) Clone the repository
+## 🔑 Authentication & Security
 
+- 🔐 **Password hashing and salting** using Passlib (bcrypt).
+- 🕒 **JWT token expiration** for enhanced security.
+- 👤 **Role-based permission management** (Admin, User).
+
+---
+
+## 📌 Features & Endpoints
+
+| Method | URL | Description | Access |
+|--------|----------------|--------------------------------|-------------|
+| **POST** | `/auth/login` | Login & retrieve token | All |
+| **POST** | `/auth/activation` | Account activation & password change | User |
+| **POST** | `/auth/logout` | Logout | User |
+| **GET** | `/loans/predict` | Loan eligibility prediction | User |
+| **POST** | `/loans/request` | Submit a loan request | User |
+| **GET** | `/loans/history` | Loan request history | User |
+| **GET** | `/admin/users` | List all users | Admin |
+| **POST** | `/admin/users` | Create a new user | Admin |
+
+---
+
+## 🗄 Database Model
+
+### 🔹 Table `users`
+Stores user information:
+- Email
+- Hashed password
+- Role (Admin, User)
+- Activation status
+
+### 🔹 Table `LoanRequests`
+Stores loan requests with:
+- Requester's ID
+- Request status
+- Associated details
+
+---
+
+## 🚀 Installation & Deployment
+
+### 1️⃣ Clone the repository
 ```bash
-   git clone https://github.com/your-username/fastapi-boilerplate.git
-   cd FastAPI-SQLModel-Boilerplate
+git clone https://github.com/your-username/fastapi-loan-api.git
+cd fastapi-loan-api
 ```
 
-### II°) Install dependencies
-
+### 2️⃣ Install dependencies
 ```bash
-   pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
-### III°) Apply Migrations to the Database
-
-To apply migrations and update the database schema, run:
-
+### 3️⃣ Apply migrations
 ```bash
-   alembic upgrade head
+alembic upgrade head
 ```
 
-### IV°) Run the server
-
+### 4️⃣ Run the server
 ```bash
-   uvicorn app.main:app --reload
+uvicorn app.main:app --reload
 ```
+
+The API will be accessible at `http://127.0.0.1:8000` 🚀.
+
+---
+
+## 📌 Testing
+
+To run unit tests:
+```bash
+pytest
+```
+
+---
+
+## 📜 License
+Open-source project under the **MIT** license.
+
