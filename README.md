@@ -85,7 +85,7 @@ Stores loan requests with:
 
 ### 1️⃣ Clone the repository
 ```bash
-git clone https://github.com/your-username/fastapi-loan-api.git
+git clone https://github.com/DorotheeCatry/fastapi-docker-azure-app.git
 cd fastapi-loan-api
 ```
 
