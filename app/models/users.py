@@ -13,12 +13,12 @@ class User(SQLModel, table=True):
     - `role`: Role of the user (default is "user").
     - `is_active`: User's status, default is active.
     """
-    id: Optional[int] = Field(default=None, primary_key=True)  # Primary key, optional for creation
-    username: str = Field(index=True, unique=True)  # Unique username
-    email: str = Field(unique=True, index=True)  # Unique email address of the user
-    hashed_password: str  # Hashed password for security
-    role: str = Field(nullable=False, default="user")  # User's role, default is "user"
-    is_active: bool = Field(default=True)  # User's status, active by default
+    id: Optional[int] = Field(default=None, primary_key=True)
+    username: str = Field(index=True, unique=True)
+    email: str = Field(unique=True, index=True)
+    hashed_password: str
+    role: str = Field(nullable=False, default="user")
+    is_active: bool = Field(default=True)  # User's status, non-active by default (I put it to active for our project, easier to insert EliteLoans in the BDD)
 
     # Defining the relationship with LoanRequests model (a user can have many loan requests)
     loan_requests: List["LoanRequests"] = Relationship(back_populates="user")
