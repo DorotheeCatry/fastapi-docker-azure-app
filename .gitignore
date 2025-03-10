@@ -23,8 +23,7 @@ logs/
 *.csv
 
 # 🚀 Migrations et fichiers temporaires
-migrations
-alembic.ini
+migrations/versions
 
 # 🐳 Docker et IDE
 docker-compose.override.yml
