@@ -1,9 +1,6 @@
 from sqlmodel import SQLModel, Field, Relationship
 from app.models.users import User
 
-from sqlmodel import SQLModel, Field, Relationship
-from app.models.users import User
-
 class LoanRequests(SQLModel, table=True):
     """
     Represents a loan request, including details about the loan and its status.

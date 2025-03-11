@@ -33,7 +33,7 @@ def validate_password(password: str):
     
 
 @router.post("/auth/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-async def register(user: UserCreate, session: Session = Depends(get_session)):
+def register(user: UserCreate, session: Session = Depends(get_session)):
     """
     Register a new user by creating their account with the provided data.
     This function checks if the username or email already exists in the system
@@ -70,7 +70,7 @@ async def register(user: UserCreate, session: Session = Depends(get_session)):
 
 
 @router.post("/auth/login", response_model=Token)
-async def login(form: AuthData, session: Session = Depends(get_session)):
+def login(form: AuthData, session: Session = Depends(get_session)):
     """
     Login a user by verifying their username and password.
     Upon successful authentication, a JWT token is created and returned.
@@ -102,7 +102,7 @@ async def login(form: AuthData, session: Session = Depends(get_session)):
 
 
 @router.post("/auth/activate", response_model=dict)
-async def activate_account(
+def activate_account(
     request: UserUpdate,
     session: Session = Depends(get_session)
 ):
@@ -147,7 +147,7 @@ async def activate_account(
 
 
 @router.post("/auth/reset-password", response_model=dict)
-async def reset_password(
+def reset_password(
     request: UserUpdate,  # Contains the new password for the user
     current_user: User = Depends(get_current_user),  # Get the current authenticated user
     session: Session = Depends(get_session)  # Database session to interact with the database
@@ -191,7 +191,7 @@ async def reset_password(
     return {"success": True, "message": "Password reset successfully!"}
 
 @router.post("/auth/logout", response_model=dict)
-async def logout(response: Response):
+def logout(response: Response):
     """
     Logout the current user by deleting the access token cookie.
 

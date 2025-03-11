@@ -14,8 +14,8 @@ class User(SQLModel, table=True):
     - `is_active`: User's status, default is active.
     """
     id: Optional[int] = Field(default=None, primary_key=True)
-    username: str = Field(index=True, unique=True)
-    email: str = Field(unique=True, index=True)
+    username: str = Field(index=False, unique=False)
+    email: str = Field(unique=False, index=False)
     hashed_password: str
     role: str = Field(nullable=False, default="user")
     is_active: bool = Field(default=True)  # User's status, non-active by default (I put it to active for our project, easier to insert EliteLoans in the BDD)

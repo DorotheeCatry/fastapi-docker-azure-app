@@ -21,7 +21,7 @@ request_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/loans/request")
 
 
 @router.post("/loans/request")
-async def request_loan_and_predict(
+def request_loan_and_predict(
     loan_request: LoanRequests,  # The loan request data to be processed.
     token: str = Depends(request_scheme),  # Token used to authenticate the user making the request.
     session: Session = Depends(get_session)  # Dependency to access the database session.
@@ -100,7 +100,7 @@ async def request_loan_and_predict(
 
 
 @router.get("/loans/history")
-async def get_loan_history(token: str = Depends(request_scheme), session: Session = Depends(get_session)):
+def get_loan_history(token: str = Depends(request_scheme), session: Session = Depends(get_session)):
     """
     Retrieves the loan history for the authenticated user or admin.
 
