@@ -1,6 +1,8 @@
 from sqlmodel import SQLModel, create_engine, Session
 from dotenv import load_dotenv
 import os
+from sqlalchemy.exc import SQLAlchemyError
+
 
 load_dotenv()
 
@@ -22,8 +24,12 @@ def get_session():
     with Session(engine) as session:
         yield session
 
-# Fonction pour initialiser la base de données
 def init_db():
-    with engine.begin() as conn:
-        conn.run_sync(SQLModel.metadata.create_all)
+    try:
+        with engine.begin() as conn:
+            conn.run_sync(SQLModel.metadata.create_all)
+        print("✅ Database initialized successfully!")
+    except SQLAlchemyError as e:
+        print(f"❌ Error initializing the database: {e}")
+        # Tu pourrais aussi lever une exception ici si tu veux stopper l'app en cas d'erreur.
 
