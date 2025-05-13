@@ -5,7 +5,8 @@ import os
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+# Use SQLite as default if DATABASE_URL is not set
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app/db/db.sqlite3")
 
 engine = create_engine(DATABASE_URL, echo=True)
 
