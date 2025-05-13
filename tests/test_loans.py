@@ -39,7 +39,7 @@ def test_request_loan_authorized(client, test_user):
     # First login to get token
     login_response = client.post(
         "/api/v1/auth/login",
-        data={"username": "testuser", "password": "userpass"}
+        json={"username": "testuser", "password": "userpass"}
     )
     token = login_response.json()["access_token"]
     
@@ -70,7 +70,7 @@ def test_get_loan_history_authorized(client, test_user):
     # First login to get token
     login_response = client.post(
         "/api/v1/auth/login",
-        data={"username": "testuser", "password": "userpass"}
+        json={"username": "testuser", "password": "userpass"}
     )
     token = login_response.json()["access_token"]
     

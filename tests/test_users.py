@@ -16,7 +16,7 @@ def test_read_users_me_authorized(client, test_user):
     # First login to get token
     login_response = client.post(
         "/api/v1/auth/login",
-        data={"username": "testuser", "password": "userpass"}
+        json={"username": "testuser", "password": "userpass"}
     )
     token = login_response.json()["access_token"]
     
@@ -38,8 +38,7 @@ def test_create_user_unauthorized(client):
         json={
             "username": "newuser",
             "email": "new@example.com",
-            "password": "newpass",
-            "role": "user"
+            "password": "newpass"
         }
     )
     assert response.status_code == 401
@@ -52,7 +51,7 @@ def test_create_user_authorized(client, test_admin):
     # First login as admin to get token
     login_response = client.post(
         "/api/v1/auth/login",
-        data={"username": "testadmin", "password": "adminpass"}
+        json={"username": "testadmin", "password": "adminpass"}
     )
     token = login_response.json()["access_token"]
     
@@ -63,8 +62,7 @@ def test_create_user_authorized(client, test_admin):
         json={
             "username": "newuser",
             "email": "new@example.com",
-            "password": "newpass",
-            "role": "user"
+            "password": "newpass"
         }
     )
     assert response.status_code == 200
@@ -86,7 +84,7 @@ def test_get_users_authorized(client, test_admin):
     # First login as admin to get token
     login_response = client.post(
         "/api/v1/auth/login",
-        data={"username": "testadmin", "password": "adminpass"}
+        json={"username": "testadmin", "password": "adminpass"}
     )
     token = login_response.json()["access_token"]
     
