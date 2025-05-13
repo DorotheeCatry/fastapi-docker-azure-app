@@ -5,10 +5,10 @@ name: Loan Prediction Service CI
 on:
   push:
     branches:
-      - main
+      - tests
   pull_request:
     branches:
-      - main
+      - tests
 
 
 jobs:
