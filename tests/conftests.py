@@ -6,6 +6,10 @@ from app.main import app
 from app.db.session import get_session
 from app.models.users import User
 from app.core.security import get_password_hash
+import os
+
+# Set test database URL
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 
 @pytest.fixture(name="engine")
 def engine_fixture():
