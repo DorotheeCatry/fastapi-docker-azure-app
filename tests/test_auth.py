@@ -13,7 +13,7 @@ def test_login_success(client, test_user):
     Test successful login with valid credentials.
     """
     response = client.post(
-        "/auth/login",
+        "api/v1/auth/login",
         data={"username": "testuser", "password": "userpass"},
     )
     assert response.status_code == 200
@@ -25,7 +25,7 @@ def test_login_wrong_password(client, test_user):
     Test login with wrong password.
     """
     response = client.post(
-        "/auth/login",
+        "api/v1/auth/login",
         data={"username": "testuser", "password": "wrongpass"},
     )
     assert response.status_code == 401
@@ -37,7 +37,7 @@ def test_register_new_user(client):
     Test user registration with valid data.
     """
     response = client.post(
-        "/auth/register",
+        "api/v1/auth/register",
         json={
             "username": "newuser",
             "email": "new@example.com",
@@ -55,7 +55,7 @@ def test_register_duplicate_username(client, test_user):
     Test user registration with duplicate username.
     """
     response = client.post(
-        "/auth/register",
+        "api/v1/auth/register",
         json={
             "username": "testuser",
             "email": "another@example.com",
