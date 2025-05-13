@@ -13,12 +13,12 @@ def test_request_loan_unauthorized(client):
             "Term": 60,
             "State": "CA",
             "NAICS_Sectors": "44",
-            "New": "Yes",
-            "Franchise": "No",
+            "New": "1",
+            "Franchise": "0",
             "NoEmp": 5,
-            "RevLineCr": "Yes",
-            "LowDoc": "No",
-            "Rural": "No"
+            "RevLineCr": "1",
+            "LowDoc": "0",
+            "Rural": "0"
         }
     )
     assert response.status_code == 401
@@ -52,12 +52,12 @@ def test_request_loan_authorized(client, test_user):
             "Term": 60,
             "State": "CA",
             "NAICS_Sectors": "44",
-            "New": "Yes",
-            "Franchise": "No",
+            "New": "1",
+            "Franchise": "0",
             "NoEmp": 5,
             "RevLineCr": "Yes",
-            "LowDoc": "No",
-            "Rural": "No"
+            "LowDoc": "0",
+            "Rural": "0"
         }
     )
     assert response.status_code == 200
