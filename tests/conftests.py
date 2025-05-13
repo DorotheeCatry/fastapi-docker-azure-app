@@ -83,5 +83,3 @@ def test_admin():
     session.commit()
     session.refresh(admin)
     return admin
-
-
