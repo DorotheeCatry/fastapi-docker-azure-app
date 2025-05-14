@@ -5,6 +5,7 @@ from sqlalchemy.pool import StaticPool
 from app.main import app
 from app.db.session import get_session
 from app.models.users import User
+from app.models.loans import LoanRequests
 from app.core.security import get_password_hash
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
@@ -69,3 +70,24 @@ def test_admin_fixture(session):
     session.commit()
     session.refresh(admin)
     return admin
+
+@pytest.fixture(name="test_loan")
+def test_loan_fixture(session, test_user):
+    loan = LoanRequests(
+        user_id=test_user.id,
+        GrAppv=50000.0,
+        Term=60.0,
+        State="CA",
+        NAICS_Sectors="44",
+        New="Yes",
+        Franchise="0",
+        NoEmp=10,
+        RevLineCr="Yes",
+        LowDoc="No",
+        Rural="No",
+        prediction=True
+    )
+    session.add(loan)
+    session.commit()
+    session.refresh(loan)
+    return loan

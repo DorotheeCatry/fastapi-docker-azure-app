@@ -32,7 +32,7 @@ def test_request_loan(client, test_user):
     assert response.status_code == 200
     assert isinstance(response.json(), bool)
 
-def test_get_loan_history(client, test_user):
+def test_get_loan_history(client, test_user, test_loan):
     """Test retrieving loan history."""
     # Login first
     login_response = client.post(
@@ -46,7 +46,11 @@ def test_get_loan_history(client, test_user):
         "/api/v1/loans/history",
         headers={"Authorization": f"Bearer {token}"}
     )
-    assert response.status_code in [200, 404]  # 404 is acceptable if no loans exist
+    assert response.status_code == 200
+    loans = response.json()
+    assert isinstance(loans, list)
+    assert len(loans) > 0
+    assert loans[0]["user_id"] == test_user.id
 
 def test_loan_request_no_auth(client):
     """Test loan request without authentication."""
