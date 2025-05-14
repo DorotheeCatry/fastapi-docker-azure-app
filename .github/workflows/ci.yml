@@ -12,6 +12,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     environment: .env
+
     env:
       # Variables d'environnement pour la base de données et les secrets
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -36,8 +37,13 @@ jobs:
           pip install pytest pytest-cov httpx pytest-httpx
 
       # (Facultatif) Debug : afficher DATABASE_URL pour vérifier qu'il est bien passé
-      - name: Debug DATABASE_URL
-        run: echo "DATABASE_URL=$DATABASE_URL"
+      - name: Debug environment variables
+        run: |
+          echo "DATABASE_URL=$DATABASE_URL"
+          echo "SECRET_KEY=$SECRET_KEY"
+          echo "ACCESS_TOKEN_EXPIRE_MINUTES=$ACCESS_TOKEN_EXPIRE_MINUTES"
+          echo "ALGORITHM=$ALGORITHM"
+
 
       - name: Run tests with coverage
         run: |
