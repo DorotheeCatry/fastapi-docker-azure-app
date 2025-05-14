@@ -11,7 +11,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
+      ALGORITHM: ${{ secrets.ALGORITHM }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,16 +32,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-cov
-          pip install httpx
-          pip install pytest-httpx
+          pip install pytest pytest-cov httpx pytest-httpx
 
-      - name: Load environment variables
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
-          echo "ACCESS_TOKEN_EXPIRE_MINUTES=${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}" >> $GITHUB_ENV
-          echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> $GITHUB_ENV
+      # (Facultatif) Debug : afficher DATABASE_URL pour vérifier qu'il est bien passé
+      - name: Debug DATABASE_URL
+        run: echo "DATABASE_URL=$DATABASE_URL"
 
       - name: Run tests with coverage
         run: |
