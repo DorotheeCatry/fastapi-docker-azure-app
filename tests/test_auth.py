@@ -1,44 +1,8 @@
 from fastapi.testclient import TestClient
 import pytest
-from sqlmodel import Session, SQLModel, create_engine
-from sqlalchemy.pool import StaticPool
 from app.main import app
-from app.db.session import get_session
-from app.models.users import User
-from app.core.security import get_password_hash
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
-
-@pytest.fixture
-def client():
-    engine = create_engine(
-        SQLALCHEMY_DATABASE_URL,
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    SQLModel.metadata.create_all(engine)
-    
-    with Session(engine) as session:
-        # Create test user
-        user = User(
-            username="testuser",
-            email="test@example.com",
-            hashed_password=get_password_hash("userpass"),
-            role="user",
-            is_active=True
-        )
-        session.add(user)
-        session.commit()
-        
-        def get_session_override():
-            return session
-
-        app.dependency_overrides[get_session] = get_session_override
-        client = TestClient(app)
-        yield client
-        app.dependency_overrides.clear()
-
-def test_login_success(client):
+def test_login_success(client, test_user):
     """Test successful login with valid credentials."""
     response = client.post(
         "/api/v1/auth/login",
@@ -48,7 +12,7 @@ def test_login_success(client):
     assert "access_token" in response.json()
     assert response.json()["token_type"] == "bearer"
 
-def test_login_wrong_password(client):
+def test_login_wrong_password(client, test_user):
     """Test login with wrong password."""
     response = client.post(
         "/api/v1/auth/login",
@@ -73,7 +37,7 @@ def test_register_new_user(client):
     assert data["email"] == "new@example.com"
     assert "password" not in data
 
-def test_register_duplicate_username(client):
+def test_register_duplicate_username(client, test_user):
     """Test user registration with duplicate username."""
     response = client.post(
         "/api/v1/auth/register",
