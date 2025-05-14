@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
+import pytest
 from app.main import app
-from app.core.security import get_password_hash
 
 def test_login_success(client, test_user):
     """Test successful login with valid credentials."""
