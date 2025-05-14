@@ -34,8 +34,8 @@ jobs:
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
-          echo "DEBUG=${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}" >> $GITHUB_ENV
-          echo "ALLOWED_HOSTS=${{ secrets.ALGORITHM }}" >> $GITHUB_ENV
+          echo "ACCESS_TOKEN_EXPIRE_MINUTES=${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}" >> $GITHUB_ENV
+          echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> $GITHUB_ENV
 
       - name: Run tests with coverage
         run: |
