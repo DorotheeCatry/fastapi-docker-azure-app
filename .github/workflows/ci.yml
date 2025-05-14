@@ -11,8 +11,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    environment: .env
     env:
+      # Variables d'environnement pour la base de données et les secrets
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
