@@ -11,7 +11,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: .env
+    environment: Test
 
     env:
       # Variables d'environnement pour la base de données et les secrets
