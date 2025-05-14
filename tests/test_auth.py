@@ -9,8 +9,8 @@ from app.core.security import get_password_hash
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 
-@pytest.fixture(name="client")
-def client_fixture():
+@pytest.fixture
+def client():
     engine = create_engine(
         SQLALCHEMY_DATABASE_URL,
         connect_args={"check_same_thread": False},
@@ -19,6 +19,7 @@ def client_fixture():
     SQLModel.metadata.create_all(engine)
     
     with Session(engine) as session:
+        # Create test user
         user = User(
             username="testuser",
             email="test@example.com",
