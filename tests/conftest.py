@@ -17,12 +17,20 @@ def engine_fixture():
         poolclass=StaticPool,
     )
     SQLModel.metadata.create_all(engine)
-    return engine
+    yield engine
+    SQLModel.metadata.drop_all(engine)
 
 @pytest.fixture(name="session")
 def session_fixture(engine):
-    with Session(engine) as session:
-        yield session
+    connection = engine.connect()
+    transaction = connection.begin()
+    session = Session(bind=connection)
+    
+    yield session
+    
+    session.close()
+    transaction.rollback()
+    connection.close()
 
 @pytest.fixture(name="client")
 def client_fixture(session):

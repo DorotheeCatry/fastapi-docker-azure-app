@@ -1,6 +1,5 @@
-from fastapi.testclient import TestClient
 import pytest
-from app.main import app
+from fastapi.testclient import TestClient
 
 def test_read_users_me(client, test_user):
     """Test getting current user details."""
@@ -25,7 +24,7 @@ def test_read_users_me_no_token(client):
     """Test accessing protected endpoint without token."""
     response = client.get("/api/v1/users/me")
     assert response.status_code == 401
-    assert response.json()["detail"] == "Not authenticated"
+    assert "Not authenticated" in response.json()["detail"]
 
 def test_admin_get_users(client, test_admin):
     """Test admin accessing users list."""

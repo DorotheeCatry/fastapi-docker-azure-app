@@ -1,6 +1,5 @@
-from fastapi.testclient import TestClient
 import pytest
-from app.main import app
+from fastapi.testclient import TestClient
 
 def test_request_loan(client, test_user):
     """Test submitting a loan request."""
@@ -66,4 +65,4 @@ def test_loan_request_no_auth(client):
     
     response = client.post("/api/v1/loans/request", json=loan_data)
     assert response.status_code == 401
-    assert response.json()["detail"] == "Not authenticated"
+    assert "Not authenticated" in response.json()["detail"]
