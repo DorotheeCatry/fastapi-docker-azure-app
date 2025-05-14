@@ -30,6 +30,13 @@ jobs:
           pip install httpx
           pip install pytest-httpx
 
+      - name: Load environment variables
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+          echo "DEBUG=${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}" >> $GITHUB_ENV
+          echo "ALLOWED_HOSTS=${{ secrets.ALGORITHM }}" >> $GITHUB_ENV
+
       - name: Run tests with coverage
         run: |
           pytest --cov=app --cov-report=xml --cov-report=html
