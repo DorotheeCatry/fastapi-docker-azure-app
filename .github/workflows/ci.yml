@@ -12,10 +12,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     
-    services:
-      sqlite:
-        image: keinos/sqlite3:latest
-        
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
