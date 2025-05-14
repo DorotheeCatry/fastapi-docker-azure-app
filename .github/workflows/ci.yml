@@ -19,6 +19,7 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
       ALGORITHM: ${{ secrets.ALGORITHM }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
       - name: Checkout code
