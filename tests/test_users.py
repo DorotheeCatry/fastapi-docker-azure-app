@@ -1,8 +1,53 @@
 from fastapi.testclient import TestClient
 import pytest
+from sqlmodel import Session, SQLModel, create_engine
+from sqlalchemy.pool import StaticPool
 from app.main import app
+from app.db.session import get_session
+from app.models.users import User
+from app.core.security import get_password_hash
 
-def test_read_users_me(client, test_user):
+SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+
+@pytest.fixture(name="client")
+def client_fixture():
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    SQLModel.metadata.create_all(engine)
+    
+    with Session(engine) as session:
+        # Create test user
+        user = User(
+            username="testuser",
+            email="test@example.com",
+            hashed_password=get_password_hash("userpass"),
+            role="user",
+            is_active=True
+        )
+        # Create test admin
+        admin = User(
+            username="testadmin",
+            email="admin@example.com",
+            hashed_password=get_password_hash("adminpass"),
+            role="admin",
+            is_active=True
+        )
+        session.add(user)
+        session.add(admin)
+        session.commit()
+        
+        def get_session_override():
+            return session
+
+        app.dependency_overrides[get_session] = get_session_override
+        client = TestClient(app)
+        yield client
+        app.dependency_overrides.clear()
+
+def test_read_users_me(client):
     """Test getting current user details."""
     # First login to get the token
     login_response = client.post(
@@ -27,7 +72,7 @@ def test_read_users_me_no_token(client):
     assert response.status_code == 401
     assert response.json()["detail"] == "Not authenticated"
 
-def test_admin_get_users(client, test_admin):
+def test_admin_get_users(client):
     """Test admin accessing users list."""
     # Login as admin
     login_response = client.post(
@@ -44,7 +89,7 @@ def test_admin_get_users(client, test_admin):
     assert response.status_code == 200
     assert "Users" in response.json()
 
-def test_non_admin_get_users(client, test_user):
+def test_non_admin_get_users(client):
     """Test non-admin trying to access users list."""
     # Login as regular user
     login_response = client.post(
