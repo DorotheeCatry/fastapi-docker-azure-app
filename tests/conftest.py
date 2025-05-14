@@ -8,12 +8,12 @@ from app.models.users import User
 from app.models.loans import LoanRequests
 from app.core.security import get_password_hash
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+TEST_DATABASE_URL = "sqlite:///:memory:"
 
 @pytest.fixture(name="engine")
 def engine_fixture():
     engine = create_engine(
-        SQLALCHEMY_DATABASE_URL,
+        TEST_DATABASE_URL,
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
